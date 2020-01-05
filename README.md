@@ -13,7 +13,7 @@
 ![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/3.png)  
 
 3、效果演示：   
-https://github.com/1061700625/Ant_Forest/效果演示.avi  
+https://github.com/1061700625/Ant_Forest/blob/master/%E6%95%88%E6%9E%9C%E6%BC%94%E7%A4%BA.avi
 
 
 4、下载源码  
