@@ -9,7 +9,8 @@
 ![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/2.png)
 
 2、自动解锁功能：  
-初次使用，程序中main()中的gesture()函数，是解锁功能，需要修改成自己的锁屏手势。可通过打开开发者选项中的指针位置查看坐标。  
+初次使用，程序中main()中的gesture()函数，是解锁功能，需要修改成自己的锁屏手势。可通过打开开发者选项中的指针位置查看坐标。
+（如果不改呢，就只是不能解锁而已，其他没影响）
 ![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/3.png)  
 
 3、效果演示：   
@@ -27,3 +28,4 @@ https://github.com/1061700625/Ant_Forest/blob/master/%E6%95%88%E6%9E%9C%E6%BC%94
   
 6、然后改锁屏手势的坐标，之后就可以运行了  
 
+github：https://github.com/1061700625/Ant_Forest
