@@ -18,7 +18,7 @@ function CloseApp() {
 function RunApp(){
     toast("启动支付宝")
     app.launchApp("支付宝");
-    text("蚂蚁森林").waitFor();
+    //text("蚂蚁森林").waitFor();
     toast("启动完成");
     
     className("android.widget.TextView").text("付钱").waitFor();
