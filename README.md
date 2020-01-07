@@ -30,6 +30,7 @@ https://www.lanzous.com/b09qpohyb
 5、打开无障碍服务、通知权限  
 ![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/7.png)  
 点击后如有跳转，就对应的完成设置  
+![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/8.png)  
 
 6、将autojs加入电池白名单、保护锁定，防止被后台关闭（这个大家都会的吧）  
 
@@ -37,12 +38,8 @@ https://www.lanzous.com/b09qpohyb
 如果不改呢，就只是不能解锁而已，其他没影响  
 ![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/3.png) 
 
-
-可通过打开开发者选项中的指针位置查看坐标。
-
-
-
-
+可通过打开开发者选项中的指针位置查看坐标。  
+![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/9.png)
 
 8、运行脚本即可
 
