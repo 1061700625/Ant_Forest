@@ -7,7 +7,11 @@
 2、所以输入时间并启动后，虽然没有任何动静，但只要不报错，一般就可以了；  
 
 3、如果想立即看到效果，可以在这里添加RunApp();后再运行：  
-![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/7.png)
+![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/6.png)
+
+#### 演示  
+![image](https://github.com/1061700625/Ant_Forest/blob/master/%E8%A7%86%E9%A2%91%E6%BC%94%E7%A4%BA.gif)
+
 
 #### 注意：  
 1、自动触发功能  
@@ -40,4 +44,4 @@ github：https://github.com/1061700625/Ant_Forest
 5、附：  
 （1）输入时间处，点“确定”按钮左边的横线位置，就会弹出键盘  
 （2）打开无障碍功能和autojs左边栏“通知栏权限”  
-![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/6.jpg)
+![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/7.jpg)
