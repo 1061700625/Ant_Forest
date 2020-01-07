@@ -44,4 +44,4 @@ github：https://github.com/1061700625/Ant_Forest
 5、附：  
 （1）输入时间处，点“确定”按钮左边的横线位置，就会弹出键盘  
 （2）打开无障碍功能和autojs左边栏“通知栏权限”  
-![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/7.jpg)
+![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/7.png)
