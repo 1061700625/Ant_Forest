@@ -1,7 +1,7 @@
 # Ant_Forest  
 蚂蚁森林自动收能量，支持自动解锁和自动触发  
-目前支持收自己的、收好友能量
-
+目前支持收自己的、收好友能量  
+![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/10.png)   
 
 ## QQ群
 913182235 
