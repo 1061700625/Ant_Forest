@@ -39,6 +39,16 @@ function EnterApp()
     //bounds(44,757,291,996).click();
     className("android.widget.FrameLayout").clickable(true).depth(13).indexInParent(0).drawingOrder(1).click();
     toast("进入森林中...");
+    var cnt = 0;
+    while(cnt++<5)
+    {
+        sleep(500);
+        if(className("android.view.View").text("社区生活 - 生活号").exists())
+        {
+            back();
+            break;
+        }
+    }
     className("android.widget.Button").text("背包").waitFor();
     sleep(1000);
     toast("进入完成");
