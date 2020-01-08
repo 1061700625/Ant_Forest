@@ -87,7 +87,7 @@ function FriendPower(){
     sleep(1000);
     
     var cnt = 0;
-    while(!className("android.view.View").text("邀请").exists() && cnt<30)
+    while(!className("android.view.View").text("邀请").exists() && cnt<30) // 请根据好友数修改此cnt数字(30)！！！
     {
         className("android.webkit.WebView").scrollDown();
         sleep(500);
@@ -153,7 +153,7 @@ function selectMode(){
 auto();
 alert("使用须知", "需开启无障碍服务、通知栏权限，音量下键可中止脚本；本程序监听状态栏自动启动，支持自动亮屏解锁，并在指定时间内检查能量。");
 alert("注意", "初次使用，程序中main()中的gesture()函数，是解锁功能，需要修改成自己的锁屏手势。可通过打开开发者选项中的指针位置查看坐标。");
-setScreenMetrics(1080, 2340);
+setScreenMetrics(1080, 2340);  // 若无法点击，尝试注释这行！！！
 
 selectMode();
 if(MODE==1)
