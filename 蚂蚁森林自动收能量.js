@@ -97,9 +97,10 @@ function FriendPower(){
     sleep(1000);
     
     var cnt = 0;
-    while(!className("android.view.View").text("邀请").exists() && cnt<30) // 请根据好友数修改此cnt数字(30)！！！
+    while(!className("android.view.View").text("邀请").exists() && cnt<30)
     {
         className("android.webkit.WebView").scrollDown();
+        toast("down");
         sleep(500);
         cnt ++;
     }
@@ -125,6 +126,7 @@ function FriendPower(){
                     break;
                 }
                 cnt ++;
+                if(cnt>=5) toast("跳过");
                 sleep(500);
             }
             sleep(1000);
@@ -146,7 +148,7 @@ function main(){
 }
 
 function selectMode(){
-    var options = ["定时收自己", "马上收好友能量", "定时收自己再收好友"]
+    var options = ["定时收自己", "马上收好友能量", "定时收自己再收好友", "马上收自己(注意时间就得填现在)"]
     var i = dialogs.select("请选择一个选项(默认第一项)", options);
     if(i >= 0){
         toast("您选择的是" + options[i]);
@@ -163,7 +165,7 @@ function selectMode(){
 auto();
 alert("使用须知", "需开启无障碍服务、通知栏权限，音量下键可中止脚本；本程序监听状态栏自动启动，支持自动亮屏解锁，并在指定时间内检查能量。");
 alert("注意", "初次使用，程序中main()中的gesture()函数，是解锁功能，需要修改成自己的锁屏手势。可通过打开开发者选项中的指针位置查看坐标。");
-//setScreenMetrics(1080, 2340);  // 若无法点击，尝试注释这行！！！
+//setScreenMetrics(1080, 2340);
 
 selectMode();
 if(MODE==1)
@@ -181,6 +183,11 @@ sleep(1000);
 console.hide();
 
 toast("开始");
+if(MODE==3)
+{
+    RunApp();
+    exit();
+}
 events.observeNotification();
 events.on("notification", function(n){
     log("收到新通知:\n 标题: %s, 内容: %s, \n包名: %s", n.getTitle(), n.getText(), n.getPackageName());
