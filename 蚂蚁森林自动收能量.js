@@ -1,5 +1,6 @@
 var MODE=0;
 
+
 function CloseApp() {
     let packageName = currentPackage();
     app.openAppSetting(packageName);
@@ -50,7 +51,6 @@ function EnterApp()
         }
     }
     className("android.widget.Button").text("背包").waitFor();
-    sleep(1000);
     toast("进入完成");
 }
 
@@ -90,48 +90,108 @@ function MyPower(){
     sleep(500);
 }
 
+
+function findImg()
+{
+    //toast("截图中...");
+    var img = captureScreen();
+    while(!img)
+    {
+        sleep(100);
+        img = captureScreen();
+    }
+    toast("截图完成!");
+    var icon = images.read("/storage/emulated/0/脚本/icon.jpg");
+    var p = findImage(img, icon);
+    if(p){
+        toast("找到啦:" + p);
+    }else{
+        toast("没找到");
+    }
+    return p;
+}
+
+
 function FriendPower(){
     EnterApp();
     className("android.view.View").text("查看更多好友").findOne().click();
-    className("android.view.View").text("周排行榜").waitFor();
-    sleep(1000);
     
-    var cnt = 0;
-    while(!className("android.view.View").text("邀请").exists() && cnt<30)
+    if(MODE==1)
     {
-        className("android.webkit.WebView").scrollDown();
-        toast("down");
-        sleep(500);
-        cnt ++;
-    }
-    
-    lists=className("android.view.View").depth(14).find();
-    if(lists.empty())
-        console.log("empty");
-    var index = 0;
-    toast(lists.length);
-    lists.forEach(function(item){
-        if(index++>=2)
+        className("android.view.View").text("周排行榜").waitFor();
+        sleep(1000);
+        var cnt = 0;
+        while(!className("android.view.View").text("邀请").exists() && cnt<30)
         {
-            item.click();
-            var cnt = 0;
-            while(cnt<5)
+            className("android.webkit.WebView").scrollDown();
+            toast("down");
+            sleep(500);
+            cnt ++;
+        } 
+        lists=className("android.view.View").depth(14).find();
+        if(lists.empty())
+            console.log("empty");
+        var index = 0;
+        toast(lists.length);
+        lists.forEach(function(item){
+            if(index++>=2)
             {
-                if(className("android.widget.Button").text("浇水").exists())
+                item.click();
+                var cnt = 0;
+                while(cnt<5)
                 {
-                    sleep(1000);
-                    MyPower();
-                    back();
-                    sleep(1000);
-                    break;
+                    if(className("android.widget.Button").text("浇水").exists())
+                    {
+                        sleep(1000);
+                        MyPower();
+                        back();
+                        sleep(1000);
+                        break;
+                    }
+                    cnt ++;
+                    if(cnt>=5) toast("跳过");
+                    sleep(500);
                 }
-                cnt ++;
-                if(cnt>=5) toast("跳过");
-                sleep(500);
+               sleep(1000);
             }
-            sleep(1000);
+        });
+    }
+    else if(MODE==4)
+    {
+        sleep(1000);
+        toast("模式4");
+        while(true)
+        {
+            var p = findImg();
+            if(p)
+            {
+                toast("找到");
+                click(p.x-500, p.y+50);
+                var cnt = 0;
+                while(cnt<5)
+                {
+                    if(className("android.widget.Button").text("浇水").exists())
+                    {
+                        MyPower();
+                        back();
+                        sleep(1000);
+                        break;
+                    }
+                    else
+                    {
+                        cnt ++;
+                        sleep(500);
+                    }
+                }
+             }
+            else
+            {
+                toast("上滑");
+                swipe(500,1800,500,500,500);
+            }
+            sleep(500);
         }
-    });
+    }
 }
 
 function main(){
@@ -148,7 +208,7 @@ function main(){
 }
 
 function selectMode(){
-    var options = ["定时收自己", "马上收好友能量", "定时收自己再收好友", "马上收自己(注意时间就得填现在)"]
+    var options = ["定时收自己", "马上收好友能量", "定时收自己再收好友", "马上收自己(注意时间就得填现在)","马上收好友(若卡在收好友界面不动，请选这个)"]
     var i = dialogs.select("请选择一个选项(默认第一项)", options);
     if(i >= 0){
         toast("您选择的是" + options[i]);
@@ -166,17 +226,23 @@ auto();
 alert("使用须知", "需开启无障碍服务、通知栏权限，音量下键可中止脚本；本程序监听状态栏自动启动，支持自动亮屏解锁，并在指定时间内检查能量。");
 alert("注意", "初次使用，程序中main()中的gesture()函数，是解锁功能，需要修改成自己的锁屏手势。可通过打开开发者选项中的指针位置查看坐标。");
 //setScreenMetrics(1080, 2340);
+if(!requestScreenCapture()){
+    toast("请求截图失败");
+    exit();
+}
 
 selectMode();
-if(MODE==1)
+sleep(500);
+if(MODE==1 || MODE==4)
 {
+    alert("注意！请核对'小手'图片存放位置，可在findImg()函数中修改，默认放在: /storage/emulated/0/脚本/icon.jpg");
     FriendPower();
     exit();
 }
 
 console.show();
 var startTime = console.rawInput("请输入能量开始查询时间，如7.23:").split(".");
-var endTime = console.rawInput("请输入能量开始查询时间，如7.25:").split(".");
+var endTime = console.rawInput("请输入能量结束查询时间，如7.25:").split(".");
 console.log(">> 开始时间: "+startTime);
 console.log(">> 结束时间: "+endTime);
 sleep(1000);
