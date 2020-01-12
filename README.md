@@ -20,6 +20,9 @@ https://github.com/1061700625/Ant_Forest/blob/master/%E6%95%88%E6%9E%9C%E6%BC%94
 
 2、下载源码和autojs app
 
+2.5 、解压小手图片并放到自己能记住的路径下，等会要填到程序里的findImg()！！  
+![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/11.png)
+
 3、解压并导入到app
 解压源码后，放到手机存储下的“脚本”目录；也可以是其他的，记得就行  
 ![image](https://github.com/1061700625/Ant_Forest/blob/master/pic/4.png)   
