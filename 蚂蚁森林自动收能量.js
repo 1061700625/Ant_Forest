@@ -36,9 +36,9 @@ function EnterApp()
     sleep(500);
     className("android.widget.FrameLayout").desc("搜索").click();
     className("android.widget.TextView").text("蚂蚁森林，为你在荒漠种下一棵真树").waitFor();
-    sleep(500);
+    sleep(1000);
     //bounds(44,757,291,996).click();
-    className("android.widget.FrameLayout").clickable(true).depth(13).indexInParent(0).drawingOrder(1).click();
+    className("android.widget.FrameLayout").clickable(true).depth(13).indexInParent(0).click();
     toast("进入森林中...");
     var cnt = 0;
     while(cnt++<5)
@@ -101,7 +101,7 @@ function findImg()
         img = captureScreen();
     }
     toast("截图完成!");
-    var icon = images.read("/storage/emulated/0/脚本/icon.jpg");
+    var icon = images.read("icon.jpg");
     var p = findImage(img, icon);
     if(p){
         toast("找到啦:" + p);
@@ -235,7 +235,7 @@ selectMode();
 sleep(500);
 if(MODE==1 || MODE==4)
 {
-    alert("注意！请核对'小手'图片存放位置，可在findImg()函数中修改，默认放在: /storage/emulated/0/脚本/icon.jpg");
+    alert("注意！请核对'小手'图片存放位置，可在findImg()函数中修改，如果图片跟脚本是同一个目录，就不用改。默认: icon.jpg");
     FriendPower();
     exit();
 }
