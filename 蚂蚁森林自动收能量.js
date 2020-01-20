@@ -38,7 +38,7 @@ function EnterApp()
     className("android.widget.TextView").text("蚂蚁森林，为你在荒漠种下一棵真树").waitFor();
     sleep(1000);
     //bounds(44,757,291,996).click();
-    className("android.widget.FrameLayout").clickable(true).depth(13).indexInParent(0).click();
+    className("android.widget.FrameLayout").clickable(true).depth(13).indexInParent(0).drawingOrder(1).click();
     toast("进入森林中...");
     var cnt = 0;
     while(cnt++<5)
@@ -77,14 +77,16 @@ function RunApp(){
 }
 
 function MyPower(){
+    var cnt = 0;
     do {
         var powerList = className("android.widget.Button").textStartsWith("收集能量").find();
-            powerList.forEach(function(item){
+        powerList.forEach(function(item){
             press(item.bounds().centerX(), item.bounds().centerY(), 80);
             //item.click();
             toast("收取一次");
             sleep(200);
-            });
+        });
+        if((MODE==4||MODE==2) && cnt++>=10) break;
     } while (powerList.length);
     toast("未成熟");
     sleep(500);
@@ -113,7 +115,11 @@ function findImg()
 
 
 function FriendPower(){
-    EnterApp();
+    if(MODE==4)
+    {
+        EnterApp();    
+    }
+    
     className("android.view.View").text("查看更多好友").findOne().click();
     
     if(MODE==1)
@@ -156,10 +162,11 @@ function FriendPower(){
             }
         });
     }
-    else if(MODE==4)
+    else if(MODE==4 || MODE==2)
     {
         sleep(1000);
         toast("模式4");
+        var skip_cnt = 0;
         while(true)
         {
             var p = findImg();
@@ -183,11 +190,18 @@ function FriendPower(){
                         sleep(500);
                     }
                 }
+                skip_cnt = 0;
              }
             else
             {
                 toast("上滑");
                 swipe(500,1800,500,500,500);
+                skip_cnt += 1;
+                if(skip_cnt > 10)
+                {
+                    toast("结束退出！");
+                    exit();
+                }
             }
             sleep(500);
         }
@@ -203,12 +217,14 @@ function main(){
   sleep(1000);
   RunApp();
   if(MODE==2)
+  {
       FriendPower();
+  }
   exit();
 }
 
 function selectMode(){
-    var options = ["定时收自己", "马上收好友能量", "定时收自己再收好友", "马上收自己(注意时间就得填现在)","马上收好友(若卡在收好友界面不动，请选这个)"]
+    var options = ["定时收自己", "(不要点我)", "定时收自己再收好友", "马上收自己(注意时间就得填现在)","马上收好友(若卡在收好友界面不动，请选这个)"]
     var i = dialogs.select("请选择一个选项(默认第一项)", options);
     if(i >= 0){
         toast("您选择的是" + options[i]);
