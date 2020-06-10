@@ -29,7 +29,7 @@ function EnterApp()
     className("android.widget.TextView").text("付钱").waitFor();
     //bounds(33,103,843,180).click();
     var res = className("android.widget.TextView").text("蚂蚁森林").findOne();
-    click(res.bounds().centerX(), res.bounds().centerY());
+    press(res.bounds().centerX(), res.bounds().centerY(), 80);
     
     /*
     className("android.widget.ViewFlipper").click();
@@ -63,11 +63,12 @@ function RunApp(){
     EnterApp();
       while(true){
         var dates = new Date();
-        if(dates.getHours() == startTime[0] && dates.getMinutes() >= startTime[1] && dates.getMinutes() < endTime[1])
+        var min = dates.getMinutes();
+        if(dates.getHours() == startTime[0] && min >= startTime[1] && min < endTime[1])
         {
             MyPower();
         }
-        else if(dates.getHours() == endTime[0] && dates.getMinutes() == endTime[1])
+        else if(dates.getHours() == endTime[0] && min >= endTime[1])
         {
             toast("结束");
             //exit();
@@ -78,45 +79,80 @@ function RunApp(){
             toast("未到时间");
             sleep(5000);
         }
+        /*
+        var res = MyPower();
+        if(res)
+            break;
+        else{
+            sleep(500);
+        }
+        */
     }
 }
 
 
 function getIcon(){
-    if(files.exists("icon.jpg")){
+    if(!files.exists("icon.jpg")){
+        var url="http://121.36.68.53/WEB/SHARE/icon.jpg";
+        var res = http.get(url);
+        if(res.statusCode != 200){
+            toast("小手图片请求失败");
+        }
+        files.writeBytes("icon.jpg", res.body.bytes());
+        toast("小手图片下载成功");
+    }else{
         toast("小手图片已存在！");
-        return;
     }
-    var url="http://121.36.68.53/WEB/SHARE/icon.jpg";
-    var res = http.get(url);
-    if(res.statusCode != 200){
-        toast("小手图片请求失败");
-    }
-    files.writeBytes("icon.jpg", res.body.bytes());
-    toast("小手图片下载成功");
-   // app.viewFile("icon.jpg");
 }
 
-
+var MP_valid = 0;
 function MyPower(){
     var cnt = 0;
-    do {
+    MP_valid = 0;
+    /*
+    var p=true;
+    while(p){
+        toast("找一找");
+        var img = captureScreen();
+        while(!img)
+        {
+          sleep(100);
+          img = captureScreen();
+        }
+        toast("截图完成!");
+
+        p = images.findMultiColors(img, "#57b96c", [[17, 0, "#31a63e"], [48, 0, "#3aa44a"], [97, 0, "#ffffff"]], {threshold:15});
+        if(p) {
+          toast(p);
+          click(p.x,p.y-20);
+          MP_valid += 1;
+          sleep(500);
+        }
+        else toast("没找到");
+        if((MODE==4||MODE==2||MODE==1) && cnt++>=5) return 1;
+    } */
+    
+    while (true){
         var powerList = className("android.widget.Button").textStartsWith("收集能量").find();
-        powerList.forEach(function(item){
-            press(item.bounds().centerX(), item.bounds().centerY(), 80);
-            //item.click();
-            //click(item.bounds().centerX());
-            toast("收取一次");
-            sleep(200);
-        });
-        if((MODE==4||MODE==2) && cnt++>=10) break;
-    } while (powerList.length);
-    toast("未成熟");
-    sleep(500);
+        if(!powerList.empty()){
+            powerList.forEach(function(item){
+                press(item.bounds().centerX(), item.bounds().centerY(), 80);
+                toast("收取一次");
+                MP_valid += 1;
+                sleep(200);
+            });
+            return MP_valid;
+        }else{
+            toast("没找到");
+        }
+        if((MODE==4||MODE==2||MODE==1) && cnt++>=5) return 1;
+    }
+
+    return MP_valid;
 }
 
 
-function findImg()
+function findImg(path)
 {
     //toast("截图中...");
     var img = captureScreen();
@@ -126,7 +162,7 @@ function findImg()
         img = captureScreen();
     }
     toast("截图完成!");
-    var icon = images.read("icon.jpg");
+    var icon = images.read(path);
     var p = findImage(img, icon);
     if(p){
         toast("找到啦:" + p);
@@ -167,24 +203,22 @@ function FriendPower(){
             if(p)
             {
                 toast("找到");
-                click(p.x-500, p.y+50);
-                var cnt = 0;
-                while(cnt<5)
+                click(p.x-500, p.y+50);       
+                sleep(2000);     
+                while(true)
                 {
-                    if(className("android.widget.Button").text("浇水").exists())
+                    if(className("android.view.View").text("TA收取你").exists())
+                    //if(className("android.widget.Button").text("浇水").exists())
                     {
                         MyPower();
-                        back();
-                        sleep(1000);
+                       // while(!className("android.view.View").text("总排行榜").exists()){
+                            back();
+                            sleep(1000);
+                       // }
                         break;
                     }
-                    else
-                    {
-                        cnt ++;
-                        sleep(500);
-                    }
+                    sleep(500);
                 }
-                skip_cnt = 0;
              }
             else
             {
@@ -204,7 +238,11 @@ function FriendPower(){
                 }
                 img_last = images.copy(img);
                 toast("上滑");
+                swipe(500,500,500,800,100);
+                sleep(500);
                 swipe(500,1800,500,500,500);
+                
+                
                 // skip_cnt += 1;
                 // if(skip_cnt > 10)
                 // {
@@ -223,8 +261,11 @@ function FriendPower(){
     }
 }
 
-function main(){
+function main(){    
   device.wakeUp();
+  sleep(500);
+  device.wakeUpIfNeeded();
+  log(device.isScreenOn());
   sleep(1000);
   swipe(500,1800,500,500,100);
   sleep(1000);
@@ -239,7 +280,7 @@ function main(){
 }
 
 function selectMode(){
-    var options = ["定时收自己", "马上收好友(无限循环)", "定时收自己再收好友", "马上收自己(注意时间就得填现在)","马上收好友(若卡在收好友界面不动，请选这个)"]
+    var options = ["定时收自己", "马上收好友(无限循环)", "定时收自己再收好友", "马上收自己","马上收好友"]
     var i = dialogs.select("请选择一个选项(默认第一项)", options);
     if(i >= 0){
         toast("您选择的是" + options[i]);
@@ -253,7 +294,7 @@ function selectMode(){
 
 //程序从这里开始
 auto();
-alert("使用须知", "需开启无障碍服务、通知栏权限，音量下键可中止脚本；本程序监听状态栏自动启动，支持自动亮屏解锁，并在指定时间内检查能量。");
+alert("使用须知", "需开启无障碍服务、通知栏权限，音量下键可中止脚本(当前关闭，自助开启)；本程序监听状态栏自动启动，支持自动亮屏解锁，由蚂蚁森林通知触发收能量。");
 alert("注意", "初次使用，程序中main()中的gesture()函数，是解锁功能，需要修改成自己的锁屏手势。可通过打开开发者选项中的指针位置查看坐标。");
 //setScreenMetrics(1080, 2340);
 if(!requestScreenCapture()){
@@ -266,7 +307,7 @@ selectMode();
 sleep(500);
 if(MODE==1 || MODE==4)
 {
-    alert("注意！请核对'小手'图片存放位置，可在findImg()函数中修改，如果图片跟脚本是同一个目录，就不用改。默认: icon.jpg");
+    //alert("注意！请核对'小手'图片存放位置，可在findImg()函数中修改，如果图片跟脚本是同一个目录，就不用改。默认: icon.jpg");
     tempM1 = 1;
     while(true){
         FriendPower();
@@ -275,6 +316,7 @@ if(MODE==1 || MODE==4)
     }
     exit();
 }
+
 
 console.show();
 var startTime = console.rawInput("请输入能量开始查询时间，如7.23:").split(".");
@@ -287,34 +329,15 @@ console.hide();
 toast("开始");
 if(MODE==3)
 {
-    RunApp();
+    RunApp();    
     exit();
 }
 
-
-/*while(1)
-{
-    var dates = new Date();
-    if(dates.getHours() >= startTime[0] && dates.getMinutes()>=startTime[1] && dates.getMinutes()<=endTime[1])
-    {
-        main();
-    }
-    else if(dates.getHours() == endTime[0] && dates.getMinutes() >= endTime[1])
-    {
-        toast("结束");
-        exit();
-    }
-    else
-    {
-        toast("睡眠");
-        sleep(1000);
-    }
-}*/
         
 events.observeNotification();
 events.on("notification", function(n){
     log("收到新通知:\n 标题: %s, 内容: %s, \n包名: %s", n.getTitle(), n.getText(), n.getPackageName());
-    if(n.getPackageName()=="com.eg.android.AlipayGphone")
+    //if(n.getPackageName()=="com.eg.android.AlipayGphone")
     {
       if(n.getTitle()=="你的能量快成熟了")
         main();
